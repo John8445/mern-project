@@ -11,6 +11,7 @@ import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/users.js";
 import postRoutes from "./routes/posts.js";
+//importing controllers
 import { register } from "./controllers/auth.js";
 import { createPost } from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
@@ -44,9 +45,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
+/* Routes With FILES */
+//files for the pictures in posts an profile pics
 app.post("/auth/register", upload.single("picture"), register);
 app.post("/posts", verifyToken, upload.single("picture"), createPost);
 
+/* Routes */
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
@@ -67,6 +71,7 @@ const connectToDatabase = async () => {
 const startServer = async () => {
   await connectToDatabase();
   app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
+  /* ADD DATA ONE TIME */
   // User.insertMany(users);
   // Post.insertMany(posts);
 };
